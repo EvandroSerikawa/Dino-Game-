@@ -2,76 +2,71 @@ const dino = document.querySelector('.dino');
 const background = document.querySelector('.background');
 
 let isJumping = false;
-let isGameover = false;
+let isGameOver = false;
 let position = 0;
 
 function handleKeyUp(event){
     if(event.KeyCode === 32){
         if(!isJumping){
-            Jump();
+            jump();
         }
     }
 }
 
-function Jump(){
+function jump(){
     isJumping = true;
 
-    let upInterval = setInterval(()=> {
-        if(position >=150){
-
+    let upInterval = setInterval(() => {
+        if(position >= 150){
             // descendo 
             clearInterval(upInterval);
 
-            let downInterval = setInterval(()=>{
-                if(position <= 0){
-                clearInterval(downInterval)
-                isJumping = false;
-                } else {
-                position -= 20;
-                dino.style.bottom = position + 'px';
-                }
-            },20);
+    let downInterval = setInterval(() => {
+        if(position <= 0){
+            clearInterval(downInterval);
+            isJumping = false;
         }else{
-        //subindo 
-        position += 20;
-        dino.style.bottom = position + 'px';
+            position -= 20;
+            dino.style.bottom = position + 'px';
         }
-    },20);
+    }, 20);        
+        }else{
+            // Subindo
+            position += 20;
+            dino.style.bottom = position + 'px';
+        }
+    }, 20);
 }
 
 
 function createCactus(){
     const cactus = document.createElement('div');
     let cactusPosition = 1000;
-    let randomTime = math.random() * 6000; // Ordem aleatória dos Cactus    
+    let randomTime = Math.random() * 6000;
 
-    if(isGameover) return;
+    if(isGameOver) return;
 
     cactus.classList.add('cactus');
     background.appendChild(cactus);
     cactus.style.left = cactusPosition + 'px';
 
-    let leftTimer = setInterval(()=>{
-        if(cactusPosition < -60){
-            //saiu da tela
+    let leftTimer = setInterval(() =>{
+        if(cactusPosition < -60 ){
+            // Saiu da tela 
             clearInterval(leftTimer);
             background.removeChild(cactus);
-        } else if ( cactusPosition > 0 && cactusPosition < 60 && position < 60){
+        } else if ( cactusPosition > 0 && cactusPosition < 60 && position < 60 ){
             // Game Over
-
             clearInterval(leftTimer);
-            isGameover = true;
-            document.body.innerHTML = '<h1 class="game-over">Fim do jogo</h1>';
+            isGameOver = true;
+            document.body.innerHTML = '<h1 class="game-over">Fim do Jogo</h1>';
         } else {
             cactusPosition -= 10;
             cactus.style.left = cactusPosition + 'px';
-         }
+        }
     },20);
-
-    setTimeout(createCactus,randomTime);
+    setTimeout(createCactus, randomTime);
 }
 
-
 createCactus();
-document.addEventListener('Keyup', handleKeyUp);
-
+document.addEventListener('keyup', handleKeyUp);
